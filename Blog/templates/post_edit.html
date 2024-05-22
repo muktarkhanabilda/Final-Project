@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block header_image %}
+    background-image: url('{% static "assets/img/home-bg.jpg" %}')
+{% endblock header_image %}
+
+{% block header_title %}
+    <div class="post-heading">
+        <h1>Create a new post</h1>
+    </div>
+{% endblock header_title %}
+
+{% block Content %}
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% bootstrap_form_errors form type='all' %}
+
+                        {% bootstrap_field form.title %}
+                        {% bootstrap_field form.title_image show_label=False%}
+                        {% bootstrap_field form.content %}
+                        {% bootstrap_field form.description %}
+                        {% bootstrap_field form.status %}
+
+                        {% bootstrap_button button_type="submit" content="OK" %}
+                        {% bootstrap_button button_type="reset" content="Cancel" %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </article>
+    <script type="text/javascript">
+        var uploadField = document.getElementById("id_title_image");
+
+        uploadField.onchange = function () {
+            if (this.files[0].size > 5242880) {
+                alert("Image is too big!");
+                this.value = "";
+            }
+        };
+    </script>
+{% endblock Content %}
